@@ -2,25 +2,26 @@
 
 ## Table of JavaScript Methods
 
-| Method/Operator    | Description |
-|-------------------|-------------|
-| `new Audio()`     | Membuat objek audio baru untuk memutar suara di browser. |
-| `.find()`         | Mencari elemen pertama dalam array yang memenuhi kondisi tertentu. |
-| `?.` (Optional Chaining) | Mengakses properti atau metode dari objek secara aman tanpa error jika objek tersebut `null` atau `undefined`. |
-| `.play()`         | Memulai pemutaran audio atau video. |
-| `.pause()`        | Menghentikan sementara pemutaran audio atau video. |
-| `.remove()`       | Menghapus elemen dari DOM. |
-| `.sort()`         | Mengurutkan elemen dalam array. Secara default berdasarkan urutan Unicode. |
-| `.filter()`       | Membuat array baru dengan elemen yang memenuhi kondisi tertentu. |
-| `.forEach()`      | Menjalankan fungsi tertentu untuk setiap elemen dalam array. |
-| `.map()`          | Membuat array baru dengan hasil dari pemanggilan fungsi pada setiap elemen array lama. |
+| Method                  | Description |
+|-------------------------|-------------|
+| `new Audio()`           | Membuat objek audio baru yang memungkinkan kita untuk memutar file suara dalam JavaScript. Dengan metode ini, kita bisa menambahkan efek suara atau musik ke dalam aplikasi web tanpa perlu menggunakan elemen HTML `<audio>`. Objek `Audio` memiliki berbagai metode seperti `.play()`, `.pause()`, dan `.volume`. |
+| `.find()`               | Metode array yang digunakan untuk mencari elemen pertama dalam array yang memenuhi kondisi yang ditentukan dalam callback function. Jika ada elemen yang cocok, metode ini mengembalikan elemen tersebut. Jika tidak ada yang cocok, hasilnya adalah `undefined`. Metode ini tidak mengubah array asli. |
+| `?.` (Optional Chaining) | Operator yang digunakan untuk mengakses properti atau metode dari objek secara aman tanpa harus memeriksa apakah objek tersebut `null` atau `undefined`. Jika objek atau properti yang diakses tidak ada, hasilnya akan `undefined` tanpa menyebabkan error, sehingga mencegah runtime error pada objek bersarang (nested objects). |
+| `.play()`               | Metode yang digunakan untuk memulai pemutaran file audio atau video yang dimuat dalam elemen HTML `<audio>` atau `<video>`. Jika pemutaran berhasil, metode ini mengembalikan `Promise`. Jika pemutaran gagal karena masalah seperti kebijakan browser, perlu penanganan dengan `.catch()`. |
+| `.pause()`              | Metode yang digunakan untuk menghentikan sementara pemutaran audio atau video yang sedang berjalan. Berbeda dengan `.stop()`, metode ini hanya menghentikan sementara, sehingga pemutaran bisa dilanjutkan dari titik terakhir. |
+| `.remove()`             | Metode yang digunakan untuk menghapus elemen dari DOM secara langsung tanpa perlu merujuk ke elemen induk. Berguna dalam manipulasi DOM ketika elemen sudah tidak diperlukan lagi, misalnya saat menutup modal atau menghapus item dari daftar. |
+| `.sort()`               | Metode array yang digunakan untuk mengurutkan elemen dalam array berdasarkan kondisi tertentu. Secara default, metode ini mengurutkan elemen sebagai string dalam urutan leksikografis (sesuai kode ASCII). Untuk sorting angka atau kriteria lain, kita bisa menggunakan fungsi perbandingan sebagai argumen. Metode ini mengubah array asli. |
+| `.filter()`             | Metode array yang membuat array baru yang hanya berisi elemen-elemen yang memenuhi kondisi dalam callback function. Metode ini tidak mengubah array asli, tetapi mengembalikan array baru yang berisi elemen yang lolos filter. Cocok digunakan untuk menyaring data berdasarkan kondisi tertentu. |
+| `.forEach()`            | Metode array yang mengeksekusi fungsi callback untuk setiap elemen dalam array tanpa mengembalikan nilai. Metode ini sering digunakan untuk iterasi dan manipulasi elemen dalam array, tetapi tidak bisa menghentikan iterasi lebih awal seperti `for` loop. |
+| `.map()`                | Metode array yang membuat array baru dengan hasil pemanggilan fungsi callback pada setiap elemen dalam array asli. Berbeda dengan `.forEach()`, metode ini mengembalikan array baru dengan elemen yang sudah dimodifikasi, sehingga cocok untuk transformasi data. |
 
 ## Example Usage
 
 ### `new Audio()`
 ```javascript
-const sound = new Audio('audio.mp3');
-sound.play();
+const sound = new Audio('sound.mp3');
+sound.play(); // Memutar audio
+sound.volume = 0.5; // Mengatur volume ke 50%
 ```
 
 ### `.find()`
@@ -32,47 +33,55 @@ console.log(result); // 30
 
 ### `?.` (Optional Chaining)
 ```javascript
-const user = { profile: { name: 'John' } };
-console.log(user.profile?.name); // 'John'
-console.log(user.address?.city); // undefined, tidak error
+const user = { profile: { name: "Alice" } };
+console.log(user?.profile?.name); // "Alice"
+console.log(user?.address?.city); // undefined (tanpa error)
 ```
 
-### `.play()` and `.pause()`
+### `.play()` dan `.pause()`
 ```javascript
-const audio = new Audio('song.mp3');
-audio.play();
-setTimeout(() => audio.pause(), 5000); // Pause setelah 5 detik
+const music = new Audio('music.mp3');
+music.play().then(() => {
+  console.log("Musik sedang diputar");
+}).catch(error => {
+  console.log("Gagal memutar musik", error);
+});
+setTimeout(() => music.pause(), 5000); // Pause setelah 5 detik
 ```
 
 ### `.remove()`
 ```javascript
-const element = document.getElementById('myElement');
-element.remove();
+const element = document.getElementById("myElement");
+element.remove(); // Menghapus elemen dari DOM
 ```
 
 ### `.sort()`
 ```javascript
-const fruits = ['banana', 'apple', 'cherry'];
+const fruits = ["banana", "apple", "cherry"];
 fruits.sort();
-console.log(fruits); // ['apple', 'banana', 'cherry']
+console.log(fruits); // ["apple", "banana", "cherry"]
+
+const numbers = [5, 2, 10, 1];
+numbers.sort((a, b) => a - b); // Mengurutkan angka secara numerik
+console.log(numbers); // [1, 2, 5, 10]
 ```
 
 ### `.filter()`
 ```javascript
-const ages = [18, 22, 15, 30];
-const adults = ages.filter(age => age >= 18);
-console.log(adults); // [18, 22, 30]
+const numbers = [1, 2, 3, 4, 5];
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log(evenNumbers); // [2, 4]
 ```
 
 ### `.forEach()`
 ```javascript
-const colors = ['red', 'blue', 'green'];
-colors.forEach(color => console.log(color));
+const names = ["Alice", "Bob", "Charlie"];
+names.forEach(name => console.log(name));
 ```
 
 ### `.map()`
 ```javascript
 const numbers = [1, 2, 3];
-const squares = numbers.map(num => num * num);
-console.log(squares); // [1, 4, 9]
+const squared = numbers.map(num => num * num);
+console.log(squared); // [1, 4, 9]
 ```
